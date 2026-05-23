@@ -41,13 +41,13 @@
 - 考點
     1. 安全狀態絕對不會發生死結。
     2. 不安全狀態 不一定代表已經死結，他只代表有可能發生
-## 多重實例資源：銀行家演算法 (Banker's Algorithm)
-去看課堂小考或是直接看講義分為**安全性演算法** (Safety Algorithm)：用來檢查當前狀態是否安全跟**資源請求演算法** (Resource-Request Algorithm)
+## 多重實例資源：
+去看課堂小考或是直接看講義分為**安全性演算法** (Safety Algorithm)：用來檢查當前狀態是否安全跟**資源請求演算法** (banker Algorithm)
 - **安全性演算法 (Safety Algorithm)**：用來檢查當前狀態是否安全 。  
     - 尋找一個尚未完成 (Finish == false) 且其需求可以被目前可用資源滿足的進程 (Need <= Work) 。  
     - 如果有，就假設它能順利完工並釋放資源，將它的 Allocation 加回 Work 中 (Work = Work + Allocation)，並標記為完成 
     - 一直重複，如果最後所有進程都能被標記為 true，系統就是安全的
-- 資源請求演算法 (Resource-Request Algorithm)：當某個執行緒 $T_i$ 實際來借資源 (Request) 時 ：
+- 資源請求演算法 (banker Algorithm)：當某個執行緒 $T_i$ 實際來借資源 (Request) 時 ：
     - Step 1：檢查 Request <= Need (確保它沒有要求超過當初宣告的最大值)
     - Step 2：檢查 Request <= Available (確保系統現在有足夠資源給它) 。
     - Step 3 (最重要)：系統會「假裝 (Pretend)」把資源分配給它，並更新矩陣狀態：Available = Available - Request   
