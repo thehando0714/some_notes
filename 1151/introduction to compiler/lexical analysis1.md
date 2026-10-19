@@ -51,3 +51,42 @@
 - 經典反例包含：$\{wcw\}$ (其中 $w$ 為 $a$ 與 $b$ 的字串) 以及 $\{a^nb^n, n \ge 0\}$。   
 - 限制原因：如果語言需要「記憶」過去發生過的「非固定數量 (nonconstant amount)」資訊，就無法被正規表示式所識別。
 - 反例![alt text](image.png)
+## 有限狀態機 (Finite Automata, FA) 基礎概念
+- **主要用途**：有限狀態機是一種機制，用於識別由正規表示式 (Regular Expression, RE) 所指定的詞符 (Tokens)。
+- 五個組成元素：$S$：
+    - 有限的狀態集合 (即圖形中的頂點)。
+    -   $\Sigma$：字母表 (Alphabet)。
+    -   $\delta$：轉移集合 (Transitions)，由字元標記的有向邊。
+    -   $S_0$：起始狀態 (Start state)，通常以帶有 "start" 標記的箭頭指向該頂點。
+    -   $F$：最終狀態/接受狀態集合 (Final/accepting states)，在圖形中通常以雙同心圓表示。   
+- ![alt text](image-1.png)
+## FA 處理輸入字串的流程與表示法
+- **處理流程**：從起始狀態 $S_0$ 開始，針對每個輸入字元在狀態機上進行轉移。
+    -   如果對於輸入字元不存在可用的轉移路徑 $\rightarrow$ 拒絕 (REJECT)。
+    -    當輸入字串完全被讀取完畢時：若當前狀態屬於 $F$ $\rightarrow$ 接受 (ACCEPT)；否則 $\rightarrow$ 拒絕 (REJECT)。
+    -    若為 ACCEPT，則代表該輸入字串屬於該正規表示式定義的語言 $L(RE)$。
+- **表示方法**：可以透過轉移圖 (Transition diagram) 或轉移表 (Transition table) 來呈現。
+## 兩種有限狀態機：DFA 與 NFA
+- **DFA (確定性有限狀態機, Deterministic FA)：**:
+    - 對於每個狀態 $s$ 與輸入符號 $a$，最多只有一條標記為 $a$ 的邊離開 $s$。
+    - 不包含 $\varepsilon$-transitions (即不吃輸入字元就能跳轉的空字串轉移)。
+- **NFA (非確定性有限狀態機, Nondeterministic FA)：**
+    - 遇到特定輸入時，「可能有超過一個以上的下一個狀態」。
+    - 或者「包含 $\varepsilon$-transitions」。
+    - ![alt text](image-2.png)
+## 模擬 NFA (How to Simulate a NFA)
+- **接受條件**：NFA 只要「存在任何一條」從起始狀態走到接受狀態的路徑能夠拼出輸入字串 $x$，就會接受該字串。這意味著同一個字串在 NFA 中可能會產生多種不同的路徑（包含拒絕與接受的路徑）。 
+-  **$\varepsilon$-closure(T) 運算**：代表從狀態集合 $T$ 中的狀態出發，僅透過 $\varepsilon$-transitions 所能到達的所有狀態集合。
+- 演算法核心：
+    1. 初始化：先計算起始狀態的空轉移閉包 $S = \varepsilon\text{-closure}(s_0)$，並讀取字元 $c$。   
+    2. 透過 while 迴圈直到檔案結束 (eof)：先對目前的狀態集合 $S$ 與輸入字元 $c$ 執行 move(S, c)，然後再對該結果取空轉移閉包 $\varepsilon\text{-closure}$ 來更新 $S$。 
+    3. 結束時檢查：若最後的狀態集合 $S$ 與接受狀態集合 $F$ 的交集不是空集合 ($S \cap F \neq \phi$)，則回傳 "yes"，否則回傳 "no"。
+## 結論 (Concluding Remarks)
+- 詞法分析器 (Scanner) 的主要任務：     
+    - 讀取輸入的字元。
+    -   將這些字元分組為詞彙 (Lexemes)。
+    -   產生詞符 (Tokens) 序列作為輸出，以供後續的語法分析 (Syntax analysis) 階段使用。
+- 如何表示或描述樣式 (Pattern)？
+    - 使用正規表示式 (Regular expression)。
+- 如何有效率地將輸入字串與預先定義的樣式進行匹配？
+    - 使用有限狀態機 (Finite automata)。
